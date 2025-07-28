@@ -1,0 +1,103 @@
+{
+ "actions": [],
+ "autoname": "PRO-.#####",
+ "creation": "2025-06-11 11:35:44.962182",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_ekyo",
+  "project_name",
+  "description",
+  "project_manager",
+  "status",
+  "amended_from",
+  "assigned_to",
+  "completion_percent"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_ekyo",
+   "fieldtype": "Section Break",
+   "label": "Project"
+  },
+  {
+   "fieldname": "project_name",
+   "fieldtype": "Data",
+   "label": "Project Name"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text",
+   "label": "description"
+  },
+  {
+   "default": "Administrator",
+   "fieldname": "project_manager",
+   "fieldtype": "Link",
+   "label": "project_manager",
+   "options": "User"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "status",
+   "options": "Draft\nActive\nCompleted"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Project",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "assigned_to",
+   "fieldtype": "Table",
+   "label": "Assigned To",
+   "options": "Task Assignment",
+   "reqd": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "completion_percent",
+   "fieldtype": "Percent",
+   "label": "Completion Percent"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-07-08 11:33:30.019057",
+ "modified_by": "Administrator",
+ "module": "Project management system",
+ "name": "Project",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "route": "project",
+ "row_format": "Dynamic",
+ "show_title_field_in_link": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "project_name"
+}
