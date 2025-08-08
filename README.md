@@ -1,33 +1,31 @@
-### sales
+Frappe Sales Report App
 
-sales
+📌 Overview
 
-### Installation
+This Frappe app provides a Sales Report DocType with features for managing customers, items, and sales data.
 
-You can install this app using the [bench](https://github.com/frappe/bench) CLI:
+It also includes a custom "Edit Sales Report" feature that allows you to update sales data directly from a dialog box, without reloading the document.
 
-```bash
-cd $PATH_TO_YOUR_BENCH
-bench get-app $URL_OF_THIS_REPO --branch develop
-bench install-app sales
-```
+🚀 Features :
 
-### Contributing
+* Sales Report DocType to store customer, items, and sales details.
 
-This app uses `pre-commit` for code formatting and linting. Please [install pre-commit](https://pre-commit.com/#installation) and enable it for this repository:
+* Child Table (saleschild) for storing item details: Item Name, Quantity, Rate, and Amount.
 
-```bash
-cd apps/sales
-pre-commit install
-```
+* Edit Sales Report Button in submitted documents.
 
-Pre-commit is configured to use the following tools for checking and formatting your code:
+* Dialog Box Editing — update child table rows directly.
 
-- ruff
-- eslint
-- prettier
-- pyupgrade
+* Direct Database Update without using ignoring permissions And without Making The Doc As Draft and update The Details  .
 
-### License
+* Instant Success Message after update.
 
-mit
+Sample Screenshots :
+
+The Document which i was created The sales Report And I Had Already Added The Details in Customer, Items Doctype 
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a71bb7c8-3413-4d99-bddc-608ca8acb04b" />
+
+I Had Successfully Completed My task without Making the Doc As Draft And Made Changes :
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/7ba6b747-2fa6-46db-88bf-b03e91576efb" />
