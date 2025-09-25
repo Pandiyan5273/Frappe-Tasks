@@ -4,7 +4,7 @@
 function update_total_amount(frm) {
     let total = 0;
     (frm.doc.sales_report || []).forEach(row => {
-        total += flt(row.amount);
+        total += flt(row.amount || 0);
     });
     frm.set_value('total_amount', total);
 }
@@ -13,14 +13,14 @@ frappe.ui.form.on('saleschild', {
     quantity(frm, cdt, cdn) {
         let row = locals[cdt][cdn];
         if (row.quantity && row.rate) {
-            frappe.model.set_value(cdt, cdn, 'amount', row.quantity * row.rate);
+            frappe.model.set_value(cdt, cdn, 'amount', flt(row.quantity) * flt(row.rate));
         }
         update_total_amount(frm);
     },
     rate(frm, cdt, cdn) {
         let row = locals[cdt][cdn];
         if (row.quantity && row.rate) {
-            frappe.model.set_value(cdt, cdn, 'amount', row.quantity * row.rate);
+            frappe.model.set_value(cdt, cdn, 'amount', flt(row.quantity) * flt(row.rate));
         }
         update_total_amount(frm);
     },
@@ -28,7 +28,7 @@ frappe.ui.form.on('saleschild', {
         let row = locals[cdt][cdn];
         row.quantity = 0;
         row.amount = 0;
-        frm.refresh_field('saleschild'); 
+        frm.refresh_field('sales_report'); // fixed fieldname
         update_total_amount(frm);
     },
     amount(frm, cdt, cdn) {
@@ -45,6 +45,7 @@ frappe.ui.form.on('Sales Report', {
             }
 
             let table_data = frm.doc.sales_report.map(row => ({
+                name: row.name,
                 item: row.item,
                 quantity: row.quantity,
                 rate: row.rate,
@@ -67,7 +68,7 @@ frappe.ui.form.on('Sales Report', {
                                 fieldtype: 'Link',
                                 fieldname: 'item',
                                 label: 'Item',
-                                options: 'Items',
+                                options: 'Item', // Fixed
                                 reqd: 1,
                                 in_list_view: true,
                                 onchange: async function () {
@@ -76,9 +77,9 @@ frappe.ui.form.on('Sales Report', {
                                     for (let row of data) {
                                         if (row.item) {
                                             try {
-                                                const item_doc = await frappe.db.get_doc('Items', row.item);
+                                                const item_doc = await frappe.db.get_doc('Item', row.item);
                                                 row.rate = item_doc.price || 0;
-                                                row.amount = (row.quantity || 0) * row.rate;
+                                                row.amount = flt(row.quantity || 0) * flt(row.rate);
                                             } catch (err) {
                                                 console.error(`Failed to fetch item ${row.item}:`, err);
                                                 row.rate = 0;
@@ -94,23 +95,21 @@ frappe.ui.form.on('Sales Report', {
                                 fieldname: 'quantity',
                                 label: 'Quantity',
                                 reqd: 1,
-                                in_list_view: true,
-
+                                in_list_view: true
                             },
                             {
                                 fieldtype: 'Int',
                                 fieldname: 'rate',
                                 label: 'Rate',
                                 reqd: 1,
-                                in_list_view: true,
+                                in_list_view: true
                             },
                             {
                                 fieldtype: 'Int',
                                 fieldname: 'amount',
                                 label: 'Amount',
                                 read_only: 1,
-                                in_list_view: true,
-                                on
+                                in_list_view: true
                             }
                         ]
                     }
@@ -121,9 +120,8 @@ frappe.ui.form.on('Sales Report', {
 
                     let updated_data = values.sales_report_table || [];
 
-                    // Auto-calculate amount just in case
                     updated_data.forEach(row => {
-                        row.amount = (row.quantity || 0) * (row.rate || 0);
+                        row.amount = flt(row.quantity || 0) * flt(row.rate || 0);
                     });
 
                     frappe.call({
@@ -141,19 +139,6 @@ frappe.ui.form.on('Sales Report', {
                     });
                 }
             });
-
-            // Recalculate amount when qty/rate changes
-            d.fields_dict.sales_report_table.grid.wrapper.on(
-                'change',
-                'input[data-fieldname="quantity"], input[data-fieldname="rate"]',
-                function() {
-                    let data = d.get_value('sales_report_table');
-                    data.forEach(row => {
-                        row.amount = (row.quantity || 0) * (row.rate || 0);
-                    });
-                    d.set_value('sales_report_table', data);
-                }
-            );
 
             d.show();
         });
