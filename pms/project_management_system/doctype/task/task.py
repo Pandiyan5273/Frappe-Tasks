@@ -49,4 +49,4 @@ def get_task_assigned_users(doctype, txt, searchfield, start, page_len, filters)
         filters={"parent": task},
         fields=["user"]
     )
-    return [(u.user,) for u in users if u.user and (not txt or txt.lower() in u.user.lower())]
+    return [(u.user,) for u in users if u.user and (not txt or txt.lower() in u.user.lower())] 
